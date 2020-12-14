@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.808.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FsTweet.Db.Migrations", "FsTweet.Db.Migrations.fsproj", "{6B5F5BF8-8E96-40B2-980E-45C5B0377695}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B5F5BF8-8E96-40B2-980E-45C5B0377695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B5F5BF8-8E96-40B2-980E-45C5B0377695}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B5F5BF8-8E96-40B2-980E-45C5B0377695}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B5F5BF8-8E96-40B2-980E-45C5B0377695}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7F7234BE-8D81-4573-96FE-092E8F1BB255}
+	EndGlobalSection
+EndGlobal

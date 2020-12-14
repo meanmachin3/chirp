@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Chessie.fs" />
+    <Compile Include="Db.fs" />
+    <Compile Include="Stream.fs" />
+    <Compile Include="Email.fs" />
+    <Compile Include="Json.fs" />
+    <Compile Include="User.fs" />
+    <Compile Include="UserSignup.fs" />
+    <Compile Include="Auth.fs" />
+    <Compile Include="Tweet.fs" />
+    <Compile Include="Wall.fs" />
+    <Compile Include="Social.fs" />
+    <Compile Include="UserProfile.fs" />
+    <Compile Include="Main.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Aether" Version="8.2" />
+    <PackageReference Include="BCrypt.Net-Next" Version="3.1.0" />
+    <PackageReference Include="Chessie" Version="0.6.0" />
+    <PackageReference Include="Chiron" Version="6.2.1" />
+    <PackageReference Include="DotLiquid" Version="2.0.298" />
+    <PackageReference Include="Logary" Version="4.2.1" />
+    <PackageReference Include="NodaTime" Version="1.3.2" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.1.1" />
+    <PackageReference Include="Postmark" Version="3.3.0" />
+    <PackageReference Include="stream-net" Version="2.2.1" />
+    <PackageReference Include="Suave" Version="2.4.3" />
+    <PackageReference Include="Suave.DotLiquid" Version="2.4.3" />
+    <PackageReference Include="Suave.Experimental" Version="2.4.3" />
+  </ItemGroup>
+  <Target Name="CopyCustomContentAfterBuild" AfterTargets="AfterBuild">
+    <Exec Command="cp -r assets views $(OutDir)" />
+    <Exec Command="./writeVersionInfo.sh $(OutDir)/views/master_page.liquid" />
+  </Target>
+  <Target Name="CopyCustomContentAfterPublish" AfterTargets="Publish">
+    <Exec Command="cp -r assets views $(PublishDir)" />
+    <Exec Command="./writeVersionInfo.sh $(PublishDir)/views/master_page.liquid" />
+  </Target>
+</Project>

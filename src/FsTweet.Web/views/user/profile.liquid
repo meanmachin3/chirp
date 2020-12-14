@@ -1,0 +1,70 @@
+{% extends "master_page.liquid" %}
+
+{% block head %}
+  <title>{{model.Username}} - FsTweet</title>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <img src="{{model.GravatarUrl}}" alt="" class="gravatar" />
+        <p class="gravatar_name">@{{model.Username}}</p>
+        {% if model.IsLoggedIn %}
+          {% unless model.IsSelf %}
+            {% if model.IsFollowing %}
+              <a class="btn btn-primary disabled" href="#" id="unfollow">Following</a>
+            {% else %}
+              <a class="btn btn-primary" href="#" id="follow" data-user-id="{{model.UserId}}">Follow</a>
+            {% endif %}
+          {% endunless %}
+          <a class="btn btn-primary" href="/logout">Logout</a>
+        {% endif %}
+      </div>
+      <div class="col-md-8">
+        <div class="row">
+          <ul class="nav nav-tabs nav-justified">
+            <li role="presentation" class="active">
+              <a href="#tweets" data-toggle="tab">Tweets</a>
+            </li>
+            <li role="presentation">
+              <a href="#following" data-toggle="tab">Following <span class="badge" id="followingCount">0</span></a>
+            </li>
+            <li role="presentation">
+              <a href="#followers" data-toggle="tab">Followers <span class="badge" id="followersCount">0</span></a>
+            </li>
+          </ul>        
+          
+          <div class="tab-content">     
+            <div id="tweets" class="tab-pane fade in active">           
+            </div>
+            <div id="following" class="tab-pane fade">            
+            </div>
+            <div id="followers" class="tab-pane fade">            
+            </div>
+          </div>
+        </div>      
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+  <script type="text/javascript">
+    window.fsTweet = {
+      user: {
+        id: "{{model.UserId}}",
+        name: "{{model.Username}}",
+        userFeedToken: "{{model.UserFeedToken}}"
+      },
+      stream: {
+        apiKey: "{{model.ApiKey}}",
+        appId: "{{model.AppId}}"
+      }
+    }  
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/getstream/dist/js_min/getstream.js"></script>
+  <script src="/assets/js/tweet.js"></script>
+  <script src="/assets/js/profile.js"></script>
+  <script src="/assets/js/social.js"></script>
+{% endblock %}
