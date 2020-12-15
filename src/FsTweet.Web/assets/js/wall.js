@@ -7,7 +7,27 @@ $(() => {
     $.ajax({
       url: '/tweets',
       type: 'post',
-      data: JSON.stringify({ post: $tweet.val() }),
+      data: JSON.stringify({ post: $tweet.val(), retweet: false }),
+      contentType: 'application/json'
+    }).done(() => {
+      $this.prop('disabled', false)
+      $tweet.val('')
+    }).fail((jqXHR, textStatus, errorThrown) => {
+      console.log({ jqXHR, textStatus, errorThrown })
+      alert('Something went wrong!')
+    })
+  })
+
+  $(document).on('click', '.retweet', function(event) {
+    const $this = $(this)
+    const $tweet = $this.siblings('p').text()
+    debugger;
+    event.preventDefault()
+    $this.prop('disabled', true)
+    $.ajax({
+      url: '/tweets',
+      type: 'post',
+      data: JSON.stringify({ post: $tweet.val(), retweet: true }),
       contentType: 'application/json'
     }).done(() => {
       $this.prop('disabled', false)
