@@ -21,7 +21,7 @@ $(() => {
   $(document).on('click', '.retweet', function(event) {
     const $this = $(this)
     const $tweet = $this.siblings('p').text()
-    debugger;
+    
     event.preventDefault()
     $this.prop('disabled', true)
     $.ajax({
@@ -38,32 +38,6 @@ $(() => {
     })
   })
 
-  // const client = stream.connect(fsTweet.stream.apiKey, null, fsTweet.stream.appId)
-  // const userFeed = client.feed('user', fsTweet.user.id, fsTweet.user.userFeedToken)
-  // const timelineFeed = client.feed('timeline', fsTweet.user.id, fsTweet.user.timelineToken)
-
-  // userFeed.subscribe(data => {
-  //   renderTweet($('#wall'), data.new[0])
-  // })
-
-  // timelineFeed.subscribe(data => {
-  //   renderTweet($('#wall'), data.new[0])
-  // })
-
-  // timelineFeed.get({ limit: 25 })
-  //   .then(body => {
-  //     const timelineTweets = body.results
-  //     userFeed.get({ limit: 25 })
-  //       .then(body => {
-  //         const userTweets = body.results
-  //         const allTweets = $.merge(timelineTweets, userTweets)
-  //         allTweets.sort((t1, t2) => new Date(t2.time) - new Date(t1.time))
-  //         $(allTweets.reverse()).each((_, tweet) => {
-  //           renderTweet($('#wall'), tweet)
-  //         })
-  //       })
-  //   })
-
   const usersTemplate =
   `{{#users}}
     <div class="well user-card">
@@ -73,8 +47,7 @@ $(() => {
   {{/users}}
   `
 
-  const renderUsers = (data, $body, $count) => {
-    debugger;
+  const renderUsers = (data, $body) => {
     const htmlOutput = Mustache.render(usersTemplate, data)
     $body.html(htmlOutput)
   }
@@ -84,13 +57,21 @@ $(() => {
     $.getJSON(url, data => renderUsers(data, $('#wall')))
   }
 
+  const saveLocalStorage = data => {
+    localStorage.setItem(fsTweet.user.id, JSON.stringify(data))
+  }
+
+  const loadFollowees = () => {
+    const url = `/${fsTweet.user.id}/followees`   
+    $.getJSON(url, data => saveLocalStorage(data))
+  }
+
   loadTweets()
+  loadFollowees()
 
   var wsUri = "ws://localhost:5000/websocket";
-  var output;
 
   function init() {
-    output = document.getElementById("output");
     testWebSocket();
   }
   
@@ -103,8 +84,8 @@ $(() => {
   }
 
   function onOpen(evt) {
-    writeToScreen("Connected");
     doSend("Connected");
+    console.log("Connected")
   }
 
   function onClose(evt) {
@@ -115,21 +96,33 @@ $(() => {
   }
 
   function onMessage(evt) {
-    writeToScreen(evt.data);
+    console.log(evt)
+    writeToScreen(evt)
   }
 
   function onError(evt) {
-    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+    console.log(evt)
   }
 
   function doSend(message) {
-    writeToScreen("SENT: " + message);
+    console.log("SENT: " + message)
     websocket.send(message);
   }
 
   function writeToScreen(message) {
-    var element = document.getElementById("output");
-    element.innerHTML = message;
+    debugger
+    let element = $("#wall")
+    let followers = JSON.parse(localStorage.getItem(fsTweet.user.id))["users"]
+    let [username, post] = message.data.split("|")
+    for (var i = 0; i < followers.length; i++) {
+      if (followers[i].username == username) {
+        let html = `<div class="well user-card">
+                    <a href="/${username}">${username}</a>
+                    <p>${post}</p>
+                    </div>`
+        element.append(html)
+      }
+    }
   }
 
   window.addEventListener("load", init, false);

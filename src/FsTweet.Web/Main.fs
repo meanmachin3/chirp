@@ -11,10 +11,9 @@ open Suave.Filters
 open Suave.Operators
 
 
-open Suave.Sockets
 open Suave.Sockets.Control
 open Suave.WebSocket
-
+open LiveFeed
 open System
 open System.IO
 open System.Reflection
@@ -77,23 +76,45 @@ let private readUserState ctx key: 'value option =
   |> Map.tryFind key
   |> Option.map (fun x -> x :?> 'value)
 
+ 
+let (|Message|_|) msg = 
+  match msg with
+  | (Text, data, true) -> Some(UTF8.toString data)
+  | _ -> None
+
 let private logIfError (logger: Logger) ctx =
   readUserState ctx "err"
   |> Option.iter logger.logSimple
   succeed
+
+let private socketHandler (ws : WebSocket) (context: HttpContext) =
+      socket {
+        let mutable loop = true
+        let id : Id = Guid.NewGuid().ToString() /// Pass user's ID
+        printfn "[socketHandler] Got a connection"
+        while loop do
+          let! msg = ws.read()
+          match msg with
+          | Message(str) -> 
+            Stream.onConnect(id, ws, str)
+          | (Close, _, _) -> Stream.closeSocket(id)
+                             loop <- false
+          | _ -> ()
+        done
+      }
 
 let app =
   choose [
     serveAssets
     serveFavIcon
     path "/" >=> page "guest/home.liquid" ""
-    // path "/websocket" >=> handShake socketHandler
+    path "/websocket" >=> handShake socketHandler
     UserSignup.Suave.webPart getDataContext sendEmail
     Auth.Suave.webpart getDataContext
     Wall.Suave.webpart getDataContext getStreamClient
     Social.Suave.webpart getDataContext getStreamClient
     UserProfile.Suave.webpart getDataContext getStreamClient
-    LiveFeed.Suave.webpart getDataContext getStreamClient
+    // LiveFeed.Suave.webpart getDataContext getStreamClient
   ]
 
 [<EntryPoint>]

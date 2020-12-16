@@ -3,6 +3,8 @@ open Suave.Sockets
 open Suave.Sockets.Control
 open Suave.WebSocket    
 open System
+open Chiron
+open Tweet
 
 type Id = String
 
@@ -32,6 +34,7 @@ module Stream = begin
                 return! sockets |> Map.add id sock |> doLoop
             | SendAll(text) ->
                 for (id, sock) in sockets |> Map.toSeq do
+                    printfn "Sending Message to sock %s" id
                     let! res = text |> sendText sock
                     ()
                 return! doLoop(sockets)
@@ -50,7 +53,12 @@ module Stream = begin
     let onConnect(id, socket, data) = inbox.Post(ReceiveString(id, socket, data))
     let sendAll(text) = inbox.Post(SendAll(text))
     let closeSocket(id) = inbox.Post(CloseSocket(id))
-
+    
+    let publishTweet (tweet: TweetMessage) = 
+        // let msg = tweet.ToString()
+        let msg = string(tweet.UserId.Value) + "|" + tweet.Post.Value
+        printfn "Message given: %s" msg
+        sendAll(msg)
 end
 
 module Suave = 
