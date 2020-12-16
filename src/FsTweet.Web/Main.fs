@@ -46,9 +46,9 @@ let env = Environment.GetEnvironmentVariable "FSTWEET_ENVIRONMENT"
 let suaveServerKey = "aWZp/TH3jaHMH8N4X0jdZtRinjzpG6AyYQpJwb3mVpI=" |> ServerKey.fromBase64
 
 let streamConfig: GetStream.Config = {
-  ApiKey = "3x3gn6v8eyqf"
-  ApiSecret = "nsvj924qz6bpykhxmxbucn2sdxzbj2n7zqvauxdt3f98e4ut3zkudnymxpuhrrgu"
-  AppId = "103615"
+  ApiKey = "87qk4xykxeaw"
+  ApiSecret = "7srg9zq6qggqyj4q6jrnrnheyd4adh3me2rgfkfs3k6qsjkqszuammuu3s2d4gy7"
+  AppId = "104005"
 }
 
 let getStreamClient = GetStream.newClient streamConfig

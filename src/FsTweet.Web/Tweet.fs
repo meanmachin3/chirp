@@ -110,13 +110,13 @@ module Persistence =
       |> AR.catch
       |> AR.mapSuccess List.ofSeq
 
-    printfn "Got %A" tweets
+    printfn "[GetTimeline] Got %A" tweets
     return! mapTweetEntities tweets    
   }
 
   let GetAllTweet (getDataContext: GetDataContext) (UserId userid) = asyncTrial {
     use dbContext = getDataContext ()
-    
+    let tweet = dbContext.Tweets.ToList()
     let tweetsQuery =
       query {
         for tweet in dbContext.Tweets do
@@ -128,7 +128,8 @@ module Persistence =
       |> Async.AwaitTask
       |> AR.catch
       |> AR.mapSuccess List.ofSeq
-
-    printfn "Got %A" tweets
+    
+    printfn "[GetAllTweet] Got tweet as %A" tweet
+    printfn "[GetAllTweet] Got %A" tweets
     return! mapTweetEntities tweets    
   }

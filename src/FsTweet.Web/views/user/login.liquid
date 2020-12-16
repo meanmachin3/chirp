@@ -17,7 +17,7 @@
         <div class="ruban">
           <div class="inner-content">
             <div class="logo">
-              <a href="index.html">
+              <a href="/">
                 <i class="fab fa-twitter"></i>
                 Home
               </a>
@@ -29,15 +29,15 @@
 
         <!--lower block-->
         <div id="sign-up">
-          <h2> Log in to Twitter</h2>
+          <h2 style="color:#070707;"> Log in to Twitter</h2>
           <form method="POST" action="/login">
             <div class="form-group">
-              <label for="exampleInputPassword1">Login</label>
+              <label for="exampleInputPassword1" style="color:#070707;">Login</label>
               <input type="text" id="Username" name="Username" class="form-control" value="{{model.Username}}" required>
             </div>
 
             <div class="form-group">
-              <label for="exampleInputPassword1">Password</label>
+              <label for="exampleInputPassword1" style="color:#070707;">Password</label>
               <input type="password" id="Password" name="Password" class="form-control" value="{{model.Password}}" required>
             </div>
 

@@ -126,15 +126,31 @@ $(() => {
   }
 
   function writeToScreen(message) {
-    let element = $("#wall")
+    let element = $("#tweets")
     let followers = JSON.parse(localStorage.getItem(fsTweet.user.id))["users"]
     let [username, post] = message.data.split("|")
     for (var i = 0; i < followers.length; i++) {
       if (followers[i].username == username) {
-        let html = `<div class="well user-card">
-                    <a href="/${username}">${username}</a>
-                    <p>${post}</p>
-                    </div>`
+        let html = `<div class="tweet-1">
+        <div class="tweet-img">
+          <img src="assets/images/img_avatar.png" alt="Avatar">
+        </div>
+        <div class="tweet-txt">
+          <div class="tweet-name-date">
+          <a href="/${username}"><span class="twitter-account"> @${username}</span></a>
+          </div>
+          <div class="message">
+            ${post}
+          </div>
+          <div class="tweet-icons">
+            <i class="fas fa-image"></i>
+            <i class="fas fa-gift"></i>
+            <i class="fas fa-retweet retweet"></i>
+            <i class="fas fa-heart"></i>
+          </div>
+        </div>
+      </div>
+      `
         element.append(html)
       }
     }

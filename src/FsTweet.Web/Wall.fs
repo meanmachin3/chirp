@@ -193,6 +193,6 @@ module Suave =
     choose [
       GET >=> path "/wall" >=> requiresAuth (renderWall getStreamClient)
       GET >=> path "/timeline" >=> requiresAuth (paintWall timeline) 
-      GET >=> path "/all" >=> requiresAuth (paintWall timeline)
+      GET >=> path "/all" >=> requiresAuth (paintWall allTweets)
       POST >=> path "/tweets" >=> requiresAuth2 (handleNewTweet publishTweet)
     ]
