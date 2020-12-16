@@ -16,6 +16,7 @@
     <Compile Include="Wall.fs" />
     <Compile Include="Social.fs" />
     <Compile Include="UserProfile.fs" />
+    <Compile Include="LiveFeed.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>
   <ItemGroup>

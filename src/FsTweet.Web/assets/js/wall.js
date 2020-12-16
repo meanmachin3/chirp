@@ -85,4 +85,53 @@ $(() => {
   }
 
   loadTweets()
+
+  var wsUri = "ws://localhost:5000/websocket";
+  var output;
+
+  function init() {
+    output = document.getElementById("output");
+    testWebSocket();
+  }
+  
+  function testWebSocket() {
+    websocket = new WebSocket(wsUri);
+    websocket.onopen = function (evt) { onOpen(evt) };
+    websocket.onclose = function (evt) { onClose(evt) };
+    websocket.onmessage = function (evt) { onMessage(evt) };
+    websocket.onerror = function (evt) { onError(evt) };
+  }
+
+  function onOpen(evt) {
+    writeToScreen("Connected");
+    doSend("Connected");
+  }
+
+  function onClose(evt) {
+    writeToScreen("Disconnected.  Will reconnect in 5 seconds.");
+    setTimeout(function () {
+      init();
+    }, 5000);
+  }
+
+  function onMessage(evt) {
+    writeToScreen(evt.data);
+  }
+
+  function onError(evt) {
+    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+  }
+
+  function doSend(message) {
+    writeToScreen("SENT: " + message);
+    websocket.send(message);
+  }
+
+  function writeToScreen(message) {
+    var element = document.getElementById("output");
+    element.innerHTML = message;
+  }
+
+  window.addEventListener("load", init, false);
+
 })
