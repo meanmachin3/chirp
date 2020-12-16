@@ -61,9 +61,7 @@ let config =
   }
 
 let sendEmail =
-  match env with
-  | "prod" -> initSendEmail senderEmailAddress siteBaseUrl postmarkServerKey
-  | _ -> consoleSendEmail
+  consoleSendEmail
 
 let target = withTarget (Console.create Console.empty "console")
 
@@ -108,6 +106,7 @@ let app =
     serveAssets
     serveFavIcon
     path "/" >=> page "guest/home.liquid" ""
+    path "/search" >=> page "user/search.liquid" ""
     path "/websocket" >=> handShake socketHandler
     UserSignup.Suave.webPart getDataContext sendEmail
     Auth.Suave.webpart getDataContext

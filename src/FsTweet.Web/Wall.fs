@@ -188,9 +188,11 @@ module Suave =
     let createTweet = Persistence.createTweet getDataContext
     let notifyTweet = GetStream.notifyTweet getStreamClient
     let publishTweet = publishTweet createTweet notifyTweet
-    let timeline = Persistence.GetAllTweet getDataContext
+    let timeline = Persistence.GetTimeline getDataContext
+    let allTweets = Persistence.GetAllTweet getDataContext
     choose [
       GET >=> path "/wall" >=> requiresAuth (renderWall getStreamClient)
       GET >=> path "/timeline" >=> requiresAuth (paintWall timeline) 
+      GET >=> path "/all" >=> requiresAuth (paintWall timeline)
       POST >=> path "/tweets" >=> requiresAuth2 (handleNewTweet publishTweet)
     ]

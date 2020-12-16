@@ -5,6 +5,100 @@
 {% endblock %}
 
 {% block content %}
+<div class='container'>
+  <div class='row'>
+
+    <!--Left Menu block-->
+    <div class='col-lg-3 col-md-1 col-2'>
+
+      <nav>
+        <a href="#"><i class="fab fa-twitter fa-2x"></i></a>
+
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a href="/wall" class="nav-link active" href="#"><i class="fas fa-house-damage"></i> <span
+                class="menu-text">Home</span></a>
+
+          </li>
+          <li class="nav-item">
+            <a href="/{{model.Username}}" class="nav-link" href="#"><i class="far fa-user-circle"></i> <span class="menu-text">Profile</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="/logout" class="nav-link" href="#"><i class="fas fa-ellipsis-h"></i> <span class="menu-text">Logout</span></a>
+          </li>
+          <li class="nav-item mobile-post">
+            <a class="nav-link2" href="#"><i class="far fa-edit"></i></a>
+          </li>
+        </ul>
+
+
+        <!-- <button type="button" class="btn btn-primary btn-sm tweeterBtn">Tweet</button> -->
+      </nav>
+
+
+    </div>
+
+    <!--middle block-->
+    <div class='col-lg-6 col-md-11 col-10'>
+      <main>
+
+        <div class="first-part">
+          <div><a class="home">Hi {{model.Username}}</a></div>
+          <div><i class="far fa-star"></i></div>
+        </div>
+        <div class="whats-happening">
+          <form class="form-tweet" id="tweetForm">
+            <div class="post-blocks">
+              <div class="post-profile"><img src="assets/images/img_avatar2.png" class="avatar" alt="Avatar"></div>
+              <textarea id="tweet" class="post-form" placeholder="What's happening"></textarea>
+            </div>
+            <div class="post-icons">
+              <div class="first-post-icons">
+                <i class="fas fa-image"></i>
+                <i class="fas fa-gift"></i>
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-smile"></i>
+              </div>
+              <div class="second-post-icons">
+                <i class="far fa-circle"></i>
+                <i class="fas fa-plus-circle"></i>
+                <button type="submit" class="btn btn-primary btn-sm tweeterBtn">Tweet</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      </main>
+
+      <!--TWEEEEEETS-->
+      <section id="tweets">
+
+
+      </section>
+    </div>
+
+    <!--Right  block-->
+    <div class='col-lg-3 d-none d-lg-block' id="rightBlock">
+      <!--search-->
+      <!-- <div class="search">
+        <form>
+          <input type="search" placeholder="search twitter" results />
+        </form>
+      </div><br /> -->
+      <!--proposed profiles-->
+      <div class="other-profiles">
+        <div class="heading">
+          <h5>Chirp! Chirp!</h5>
+        </div>
+      </div><br />
+
+      <br />
+    </div>
+
+  </div>
+
+</div>
+
   <div class="container">
     <div class="row">
       <div class="col-md-4">
@@ -12,7 +106,7 @@
         <a href="/{{model.Username}}" class="btn btn-primary">My Profile</a>
         <a href="/logout" class="btn btn-primary">Logout</a>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-8">  
         <div class="row">  
           <div class="tweet_container">
             <form class="form-tweet" id="tweetForm">

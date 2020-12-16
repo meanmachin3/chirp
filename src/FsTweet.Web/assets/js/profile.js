@@ -5,7 +5,7 @@ $(() => {
   userFeed.get({ limit: 25 })
     .then(body => {
       $(body.results.reverse()).each((_, tweet) => {
-        renderTweet($('#tweets'), tweet)
+        renderTweet($('#tweet'), tweet)
       })
     })
 })

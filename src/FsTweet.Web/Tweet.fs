@@ -83,7 +83,7 @@ module Persistence =
     |> Async.singleton
     |> AR
 
-  let GetAllTweet (getDataContext: GetDataContext) (UserId userid) = asyncTrial {
+  let GetTimeline (getDataContext: GetDataContext) (UserId userid) = asyncTrial {
     use dbContext = getDataContext ()
     let selectFolloweesQuery = query {
       for s in dbContext.Social do
@@ -101,6 +101,25 @@ module Persistence =
       query {
         for tweet in dbContext.Tweets do
           where (userIds.Contains(tweet.UserId))
+          select tweet
+      }
+    
+    let! tweets =
+      EntityFrameworkQueryableExtensions.ToListAsync(tweetsQuery)
+      |> Async.AwaitTask
+      |> AR.catch
+      |> AR.mapSuccess List.ofSeq
+
+    printfn "Got %A" tweets
+    return! mapTweetEntities tweets    
+  }
+
+  let GetAllTweet (getDataContext: GetDataContext) (UserId userid) = asyncTrial {
+    use dbContext = getDataContext ()
+    
+    let tweetsQuery =
+      query {
+        for tweet in dbContext.Tweets do
           select tweet
       }
     

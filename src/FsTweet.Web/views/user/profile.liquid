@@ -7,7 +7,7 @@
 {% block content %}
   <div class="container">
     <div class="row">
-      <div class="col-md-4">
+      <div class='col-lg-3 col-md-1 col-2'>
         <img src="{{model.GravatarUrl}}" alt="" class="gravatar" />
         <p class="gravatar_name">@{{model.Username}}</p>
         {% if model.IsLoggedIn %}
@@ -21,11 +21,11 @@
           <a class="btn btn-primary" href="/logout">Logout</a>
         {% endif %}
       </div>
-      <div class="col-md-8">
+      <div class='col-lg-6 col-md-11 col-10'>
         <div class="row">
           <ul class="nav nav-tabs nav-justified">
             <li role="presentation" class="active">
-              <a href="#tweets" data-toggle="tab">Tweets</a>
+              <a href="#tweet" data-toggle="tab">Tweets</a>
             </li>
             <li role="presentation">
               <a href="#following" data-toggle="tab">Following <span class="badge" id="followingCount">0</span></a>
@@ -33,14 +33,27 @@
             <li role="presentation">
               <a href="#followers" data-toggle="tab">Followers <span class="badge" id="followersCount">0</span></a>
             </li>
+            <li role="presentation">
+              <a href="#query" data-toggle="tab">Query <span class="badge" id="followersCount"></span></a>
+            </li>
           </ul>        
           
           <div class="tab-content">     
-            <div id="tweets" class="tab-pane fade in active">           
+            <div id="tweet" class="tab-pane fade in active">           
             </div>
             <div id="following" class="tab-pane fade">            
             </div>
             <div id="followers" class="tab-pane fade">            
+            </div>
+            <div id="query" class="tab-pane fade">    
+              <div class="md-form active-pink active-pink-2 mb-3 mt-0">
+                <input class="form-control" id="search" type="text" placeholder="Search" aria-label="Search">
+              </div>
+                <div id ="tweets">
+                  <section id ="result">
+
+                  </div> 
+                </div>
             </div>
           </div>
         </div>      

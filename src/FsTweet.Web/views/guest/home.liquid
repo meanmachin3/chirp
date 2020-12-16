@@ -1,28 +1,50 @@
 {% extends 'master_page.liquid' %}
 
 {% block head %}
-  <title>FsTweet - Powered by F#</title>
+  <title>Chirp - Powered by F#</title>
 {% endblock %}
 
 {% block content %}
-  <div class="container">
-    <div class="header clearfix">
-      <nav>
-        <ul class="nav nav-pills pull-right">
-          <li role="presentation" class="active"><a href="#">Home</a></li>
-          <li role="presentation"><a href="#">About</a></li>
-          <li role="presentation"><a href="#">Contact</a></li>
-        </ul>
-      </nav>
-      <h3 class="text-muted">FsTweet</h3>
-    </div>
-    <div class="jumbotron">
-    <img src="assets/images/FsTweetLogo.png" width="400px"/>
-    <p class="lead">Communicate with the world in a different way!</p>
-      <p>
-      <a class="btn btn-lg btn-success" href="/signup" role="button">Sign up today</a>
-    </p>
-      <a href="/login" role="button">Already a user? Sign in</a>
+  <div class="container-fluid">
+    <div class="row">
+      <!--LEFT BLUE BLOCK-->
+      <div class="col-sm-6 d-none d-sm-block left">
+        <div class="rows-3">
+          <h4> <i class="fas fa-search"></i> Follow your interests</h4><br /><br />
+          <h4> <i class="fas fa-user-secret"></i> Hear what people are talking about</h4><br /><br />
+          <h4> <i class="fas fa-dove"></i> </i>Join the conversation</h4><br />
+        </div>
+      </div>
+
+      <!--RIGHT DARK BLOCK-->
+      <div class="col-sm-6 col-12 right">
+        <div id="welcome">
+          <div class="logo-segment">
+            <div id="logo"><i class="fab fa-twitter fa-2x"></i></div>
+            <div id="sideLogin">
+              <a href="/login"><button>Log in</button></a>
+            </div>
+          </div>
+          <h2>See What's happening in the world right now</h2>
+          <br /><br /><br />
+          <h4> Join twitter today</h4>
+          <div id="signUp">
+            <a href="/signup"><button> Sign up</button></a>
+          </div> <br />
+          <div id="signIn">
+            <a href="/login"><button> Log in</button></a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
 {% endblock %}

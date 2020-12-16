@@ -9,9 +9,6 @@ $(() => {
         @{{tweet.username}} - {{#timeAgo}}{{tweet.time}}{{/timeAgo}}
       </span>
       <p>{{tweet.tweet}}</p>
-      {{#retweet}}
-        <button class="btn btn-primary retweet">Retweet</button>
-      {{/retweet}}
       <button class="btn btn-primary retweet">Retweet</button>
     </div>`
 
