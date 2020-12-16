@@ -6,7 +6,7 @@ module Domain =
   open System
   open Tweet
   open User
-
+  open Stream
   type NoifyTweet = Tweet -> AsyncResult<unit, Exception>
 
   type PublishTweetError =
@@ -32,15 +32,18 @@ module GetStream =
   open Stream
   open Tweet
   open User
+  open LiveFeed
 
   let private mapStreamResponse = function
   | Choice1Of2 _ -> ok ()
   | Choice2Of2 ex -> fail ex
 
   let notifyTweet (getStreamClient: GetStream.Client) (tweet: Tweet) = 
-
+    
     let (UserId userId) = tweet.UserId
     let (TweetId tweetId) = tweet.Id
+    let broadcast = {UserId = tweet.UserId; Post = tweet.Post}
+    Stream.publishTweet(broadcast)
     let userFeed = GetStream.userFeed getStreamClient userId
     let activity = new Activity(userId.ToString(), "tweet", tweetId.ToString())
     activity.SetData("tweet", tweet.Post.Value)
@@ -70,10 +73,10 @@ module Suave =
   type WallViewModel = {
     Username: string
     UserId: int
-    ApiKey: string
-    AppId: string
-    UserFeedToken: string
-    TimelineToken: string
+    // ApiKey: string
+    // AppId: string
+    // UserFeedToken: string
+    // TimelineToken: string
   }
 
   type PostRequest = PostRequest of string with
@@ -84,15 +87,15 @@ module Suave =
 
   let private renderWall (getStreamClient: GetStream.Client) (user: User) ctx = async {
     let (UserId userId) = user.UserId
-    let userFeed = GetStream.userFeed getStreamClient userId
-    let timelineFeed = GetStream.timelineFeed getStreamClient userId
+    // let userFeed = GetStream.userFeed getStreamClient userId
+    // let timelineFeed = GetStream.timelineFeed getStreamClient userId
     let viewModel = {
       Username = user.Username.Value
       UserId = userId
-      ApiKey = getStreamClient.Config.ApiKey
-      AppId = getStreamClient.Config.AppId
-      UserFeedToken = userFeed.ReadOnlyToken
-      TimelineToken = timelineFeed.ReadOnlyToken
+      // ApiKey = getStreamClient.Config.ApiKey
+      // AppId = getStreamClient.Config.AppId
+      // UserFeedToken = userFeed.ReadOnlyToken
+      // TimelineToken = timelineFeed.ReadOnlyToken
     }
     return! page "user/wall.liquid" viewModel ctx
   }

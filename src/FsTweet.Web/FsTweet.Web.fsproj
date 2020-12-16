@@ -13,6 +13,7 @@
     <Compile Include="UserSignup.fs" />
     <Compile Include="Auth.fs" />
     <Compile Include="Tweet.fs" />
+    <Compile Include="LiveFeed.fs" />
     <Compile Include="Wall.fs" />
     <Compile Include="Social.fs" />
     <Compile Include="UserProfile.fs" />

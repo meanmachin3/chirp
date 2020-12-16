@@ -3,6 +3,7 @@ namespace Tweet
 open Chessie.ErrorHandling
 open System
 open User
+open Chiron
 
 type Post = private Post of string with
   static member TryCreate (post: string) =
@@ -29,7 +30,12 @@ type Tweet = {
 type TweetMessage = {
   UserId: UserId
   Post: Post
-}
+} with
+    static member ToJson (u: TweetMessage) =
+      json {
+        do! Json.write "userid" u.UserId.Value
+        do! Json.write "post" u.Post.Value
+      }
 
 module Persistence =
   open Database
