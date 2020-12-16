@@ -51,4 +51,3 @@ module AR =
     asyncResult
     |> Async.ofAsyncResult
     |> Async.map (either onSuccess onFailure)
- 

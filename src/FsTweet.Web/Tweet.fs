@@ -17,6 +17,7 @@ type Post = private Post of string with
 type TweetId = TweetId of Guid
 
 type CreateTweet = UserId -> Post -> AsyncResult<TweetId, Exception>
+// type GetAllTweet = UserId -> Re<TweetId, Exception>
 
 type Tweet = {
   UserId: UserId
@@ -25,9 +26,35 @@ type Tweet = {
   Post: Post
 }
 
+type TweetMessage = {
+  UserId: UserId
+  Post: Post
+}
+
 module Persistence =
   open Database
+  open Microsoft.EntityFrameworkCore
+  open Chessie
+  open System.Linq
+  open User.Persistence
 
+  let mapUserEntityToUser (tweet: Database.Tweet) =
+    let userResult = trial {
+      // let! username = Username.TryCreate userEntity.Username
+      // let! passwordHash = PasswordHash.TryCreate userEntity.PasswordHash
+      let! post = Post.TryCreate tweet.Post
+      // let userEmailAddress =
+      //   match userEntity.IsEmailVerified with
+      //   | true -> Verified email
+      //   | false -> NotVerified email
+
+      return {
+        UserId = UserId tweet.UserId
+        Post = post
+      }      
+    }
+    userResult |> mapFirstFailure Exception
+    
   let createTweet (getDataContext: GetDataContext) (UserId userId) (post: Post) = asyncTrial {
     use dbContext = getDataContext ()
     let newTweet = {
@@ -40,4 +67,43 @@ module Persistence =
     do! saveChangesAsync dbContext
     printfn "[createTweet] tweet created: %A" newTweet
     return TweetId newTweet.Id
+  }
+
+  let mapTweetEntities (tweetEntities: Database.Tweet seq) =
+    tweetEntities
+    |> Seq.map mapUserEntityToUser
+    |> collect
+    |> mapFirstFailure (fun ex -> new AggregateException(ex) :> Exception)
+    |> Async.singleton
+    |> AR
+
+  let GetAllTweet (getDataContext: GetDataContext) (UserId userid) = asyncTrial {
+    use dbContext = getDataContext ()
+    let selectFolloweesQuery = query {
+      for s in dbContext.Social do
+        where (s.FollowerUserId = userid)
+        select s.FollowingUserId
+    }
+
+    let! userIds =
+      EntityFrameworkQueryableExtensions.ToListAsync(selectFolloweesQuery)
+      |> Async.AwaitTask
+      |> AR.catch
+      |> AR.mapSuccess List.ofSeq
+
+    let tweetsQuery =
+      query {
+        for tweet in dbContext.Tweets do
+          where (userIds.Contains(tweet.UserId))
+          select tweet
+      }
+    
+    let! tweets =
+      EntityFrameworkQueryableExtensions.ToListAsync(tweetsQuery)
+      |> Async.AwaitTask
+      |> AR.catch
+      |> AR.mapSuccess List.ofSeq
+
+    printfn "Got %A" tweets
+    return! mapTweetEntities tweets    
   }

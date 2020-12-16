@@ -64,6 +64,7 @@ module Suave =
   open Suave.Writers
   open Tweet
   open User
+  open Chessie.ErrorHandling
   open UserSignup
 
   type WallViewModel = {
@@ -134,11 +135,59 @@ module Suave =
     | Failure msg -> return! JSON.badRequest msg ctx
   }
 
+  type TweetDto = {
+    Post: string
+    UserId: int
+  } with
+    static member ToJson (u: TweetDto) =
+      json {
+        do! Json.write "post" u.Post
+        do! Json.write "username" u.UserId
+      }
+
+  type TweetDtoList = TweetDtoList of (TweetDto list) with
+    static member ToJson (TweetDtoList tweetDtos) =
+      let usersJson =
+        tweetDtos
+        |> List.map (Json.serializeWith TweetDto.ToJson)
+      json {
+        do! Json.write "users" usersJson
+      }
+
+  let private mapUsersToUserDtoList (tweets: TweetMessage list) =
+    tweets
+    |> List.map (fun tweet -> {Post = tweet.Post.Value; UserId = tweet.UserId.Value })
+    |> TweetDtoList
+
+  let private onPaintWallSuccess (tweets: TweetMessage list) =
+    mapUsersToUserDtoList tweets
+    |> Json.serialize
+    |> JSON.ok
+
+  let private onPaintWallFailure (ex: System.Exception) =
+    printfn "[onFindFollowersFailure] %A" ex
+    JSON.internalServerError
+
+  let private paintWall timeline (user: User) ctx = async { 
+    // let timeline = Persistence.GetAllTweet getDataContext
+    // printfn "sending %A" timeline
+    let! webpart =
+      timeline user.UserId
+      |> AR.either onPaintWallSuccess onPaintWallFailure
+    return! webpart ctx    
+
+    // let o = { title = "Hello World" }
+    // printfn "%A" result
+    // return! page "user/wall.liquid" timeline ctx 
+  }
+
   let webpart getDataContext getStreamClient =
     let createTweet = Persistence.createTweet getDataContext
     let notifyTweet = GetStream.notifyTweet getStreamClient
     let publishTweet = publishTweet createTweet notifyTweet
+    let timeline = Persistence.GetAllTweet getDataContext
     choose [
       GET >=> path "/wall" >=> requiresAuth (renderWall getStreamClient)
+      GET >=> path "/timeline" >=> requiresAuth (paintWall timeline) 
       POST >=> path "/tweets" >=> requiresAuth2 (handleNewTweet publishTweet)
     ]

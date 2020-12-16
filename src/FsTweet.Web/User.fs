@@ -13,7 +13,11 @@ let private base64URLEncoding bytes =
     .Replace('+', '-')
     .Replace('/', '_')
 
-type UserId = UserId of int
+type UserId = UserId of int with
+  member this.Value = 
+    let (UserId userid) = this
+    userid
+
 
 type Username = private Username of string with
   static member TryCreate (username: string) =
