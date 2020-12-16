@@ -21,7 +21,7 @@ $(() => {
   $(document).on('click', '.retweet', function(event) {
     const $this = $(this)
     const $tweet = $this.siblings('p').text()
-    debugger;
+    
     event.preventDefault()
     $this.prop('disabled', true)
     $.ajax({
@@ -74,7 +74,7 @@ $(() => {
   `
 
   const renderUsers = (data, $body, $count) => {
-    debugger;
+    
     const htmlOutput = Mustache.render(usersTemplate, data)
     $body.html(htmlOutput)
   }
