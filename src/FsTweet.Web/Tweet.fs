@@ -110,7 +110,6 @@ module Persistence =
       |> AR.catch
       |> AR.mapSuccess List.ofSeq
 
-    printfn "[GetTimeline] Got %A" tweets
     return! mapTweetEntities tweets    
   }
 
@@ -129,7 +128,5 @@ module Persistence =
       |> AR.catch
       |> AR.mapSuccess List.ofSeq
     
-    printfn "[GetAllTweet] Got tweet as %A" tweet
-    printfn "[GetAllTweet] Got %A" tweets
     return! mapTweetEntities tweets    
   }
