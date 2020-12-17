@@ -33,7 +33,7 @@ In order to run app on \*nix based/MAC system, follow the instructions below:
 **What is Working**
 
   - We designed a JSON based API that represents all messages and their replies (including errors).
-  - Used Web Sharper to implement the WebSocket interface.
+  - Used Suave to implement the WebSocket interface, where Suave is a lightweight, non-blocking web server.
 
 **Video Explaining the Project**
 
