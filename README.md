@@ -19,6 +19,7 @@
   - [User Profile](#user-profile)
   - [Query Page](#query-page)
   - [User Feed Page](#user-feed-page)
+- [Video Link](#video-link)
 
 ## Build Process
 
@@ -91,7 +92,7 @@ Token is provided with the request:
 
 ### Subscribe
 
-![Tweet](./docs/client_subs.png)
+![Tweet](./docs/follow.png)
 
 ### User Profile
 
@@ -104,3 +105,9 @@ Token is provided with the request:
 ### User Feed Page
 
 ![Register](./docs/feed.png)
+
+
+## Video Link
+
+* [Part 1](https://youtu.be/howw-f1rGaE)
+* [Part 2](https://youtu.be/hixpPvie51o)
